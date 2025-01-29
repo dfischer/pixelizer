@@ -282,7 +282,7 @@ export default {
             this.runFilter();
         },
         downloadImage(): void {
-            const fileName   = `${this.fileName}_${settingToString(this.settings)}_.png`;
+            const fileName   = `${this.fileName}_${settingToString(this.settings)}.png`;
             const destWidth  = Math.max( canvas!.width,  loadedImage.width );
             const destHeight = Math.max( canvas!.height, loadedImage.height );
             canvasToFile(

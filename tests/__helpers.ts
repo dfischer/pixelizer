@@ -11,6 +11,12 @@ export function createSetting( data: Partial<SortSettings> = {}): SortSettings {
         upperThreshold: 0.75,
         sortingType: "lightness",
         intervalFunction: "waves",
+        post: {
+            duotone: false,
+            duotoneColor1: "#FF00FF",
+            duotoneColor2: "#FF9900",
+            ...(data.post || {})
+        },
         ...data,
     };
 }

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Igor Zinken 2024 - https://www.igorski.nl
+ * Igor Zinken 2024-2025 - https://www.igorski.nl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -42,6 +42,11 @@ export const useSettingsStore = defineStore( "settings", {
             upperThreshold: 0.8,
             sortingType: SortingType.LIGHTNESS,
             intervalFunction: IntervalFunction.THRESHOLD,
+            post: {
+                duotone: false,
+                duotoneColor1: "#FF0000",
+                duotoneColor2: "#00FFFF",
+            },
         },
     }),
     actions: {

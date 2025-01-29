@@ -1,7 +1,8 @@
 /**
  * The MIT License (MIT)
  *
- * Igor Zinken 2024 - https://www.igorski.nl
+ * Igor Zinken 2025 - https://www.igorski.nl
+ * Adapted from work by Matt Kandler (https://www.mattkandler.com/blog/duotone-image-filter-javascript-rails)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,41 +21,20 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-import type { Size } from "zcanvas";
-import type { IntervalFunction } from "@/filters/sorter/interval";
-import type { SortingType } from "@/filters/sorter/sorting";
+import type { Pixel } from "@/definitions/types";
 
-export type SortSettings = {
-    width: number;
-    height: number;
-    angle: number;
-    randomness: number; // normalized 0 - 1
-    charLength: number; // normalized 0 - 1
-    lowerThreshold: number; // normalized 0 - 1
-    upperThreshold: number; // normalized 0 - 1
-    sortingType: SortingType;
-    intervalFunction: IntervalFunction;
+export function hexToRGB( hex: string ): Pixel {
+    const str = hex.replace( "#", "" );
+    return [
+        hexToInt( str.substring( 0, 2 )),
+        hexToInt( str.substring( 2, 4 )),
+        hexToInt( str.substring( 4, 6 )),
+        str.length > 6 ? hexToInt( str.substring( 6, 8 )) : 255,
+    ];
+}
 
-    // post-processing parameters
-    
-    post: PostProcessingParams
-};
+/* internal methods */
 
-export type PostProcessingParams = {
-    duotone: boolean;
-    duotoneColor1?: string;
-    duotoneColor2?: string;
-};
-
-export type Pixel = [ number, number, number, number ]; // RGBA value
-export type PixelList = Pixel[];
-
-export type PixelCanvas = Size & {
-    id: string;
-    canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-};
-
-export type CachedPixelCanvas = PixelCanvas & {
-    data: ImageData;
-};
+function hexToInt( str: string ): number {
+    return parseInt( str, 16 );
+}

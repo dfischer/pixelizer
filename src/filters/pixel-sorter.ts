@@ -21,7 +21,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 import type { Size } from "zcanvas";
-import type { CachedPixelCanvas, PixelCanvas } from "@/definitions/types";
+import type { CachedPixelCanvas, PixelCanvas, SortSettings } from "@/definitions/types";
 import { applyThreshold } from "@/filters/threshold";
 import { getCachedRotation, setCachedRotation, getCachedMask, setCachedMask } from "@/filters/sorter/cache";
 import { IntervalFunction } from "@/filters/sorter/interval";
@@ -32,17 +32,10 @@ import { useSystemStore } from "@/store/system";
 import { createCanvas, cacheCanvas, cropCanvas, rotateCanvas } from "@/utils/canvas";
 import { prepare, waitWhenBusy } from "@/utils/rafDebounce";
 
-interface PixelSortParams {
+type PixelSortParams = Omit<SortSettings, "width" | "height"> & {
     image: CachedPixelCanvas;
     maskImage?: CachedPixelCanvas;
-    randomness?: number; // normalized 0 - 1 range
-    charLength?: number; // normalized 0 - 1 range
-    lowerThreshold?: number; // normalized 0 - 1 range
-    upperThreshold?: number; // normalized 0 - 1 range
-    sortingType?: SortingType,
-    intervalFunction?: IntervalFunction;
-    angle?: number;
-}
+};
 
 type SortingJob = {
     size: Size;
@@ -70,7 +63,7 @@ let job: SortingJob | undefined;
  */
 export const pixelsort = async ({ image, maskImage, randomness = 0, charLength = 0.5,
     sortingType = SortingType.LIGHTNESS, intervalFunction = IntervalFunction.THRESHOLD,
-    lowerThreshold = 0.25, upperThreshold = 0.8, angle = 0 }: PixelSortParams ): Promise<PixelCanvas> => {
+    lowerThreshold = 0.25, upperThreshold = 0.8, angle = 0, post }: PixelSortParams ): Promise<PixelCanvas> => {
 
     prepare(); // prepares the time budget
 
@@ -154,6 +147,7 @@ export const pixelsort = async ({ image, maskImage, randomness = 0, charLength =
                 intervalFunction,
                 sortingType,
                 size,
+                post: { ...post },
             }
         }, []);// image.data.data.buffer, maskImage.data.data.buffer ]);
     });

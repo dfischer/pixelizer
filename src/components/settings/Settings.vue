@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Igor Zinken 2024 - https://www.igorski.nl
+ * Igor Zinken 2024-2025 - https://www.igorski.nl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -191,6 +191,48 @@
                     ></button>
                 </div>
             </div>
+            <!-- post sort processing -->
+            <div class="post-processing">
+                <h3 v-t="'settings.postprocessing'"></h3>
+                <div class="input-wrapper">
+                    <label
+                        for="duotone"
+                        v-t="'settings.duotone'"
+                    ></label>
+                    <input
+                        id="duotone"
+                        type="checkbox"
+                        v-model="internalPostProcValue.duotone"
+                        @change="saveState()"
+                    />
+                </div>
+                <div class="input-wrapper">
+                    <label
+                        for="duotoneColor1"
+                        v-t="'settings.color1'"
+                    ></label>
+                    <input
+                        id="duotoneColor1"
+                        type="text"
+                        maxlength="7"
+                        v-model="internalPostProcValue.duotoneColor1"
+                        @change="saveState()"
+                    />
+                </div>
+                <div class="input-wrapper">
+                    <label
+                        for="duotoneColor2"
+                        v-t="'settings.color2'"
+                    ></label>
+                    <input
+                        id="duotoneColor2"
+                        type="text"
+                        maxlength="7"
+                        v-model="internalPostProcValue.duotoneColor2"
+                        @change="saveState()"
+                    />
+                </div>
+            </div>
         </form>
     </section>
     <section class="footer">
@@ -212,7 +254,7 @@
 
 <script lang="ts">
 import { mapState, mapActions } from "pinia";
-import type { SortSettings } from "@/definitions/types";
+import type { PostProcessingParams, SortSettings } from "@/definitions/types";
 import { SortingType } from "@/filters/sorter/sorting";
 import { IntervalFunction } from "@/filters/sorter/interval";
 import { useFileStore } from "@/store/file";
@@ -259,6 +301,19 @@ export default {
             set( value: SortSettings ): void {
                 this.updateSettings( value );
             },
+        },
+        internalPostProcValue: {
+            get(): PostProcessingParams {
+                return this.internalValue.post;
+            },
+            set( value: PostProcessingParams ): void {
+                this.updateSettings({
+                    ...this.internalValue,
+                    post: {
+                        ...value,
+                    },
+                });
+            }
         },
         supportsCharLength(): boolean {
             return CHAR_LENGTH_SUPPORTING_INTERVALS.includes( this.settings.intervalFunction );

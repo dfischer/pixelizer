@@ -8,8 +8,13 @@ describe( "String util", () => {
     });
 
     it( "should be able to convert a setting to a string and back again", () => {
-        const { width, height, ...setting } = createSetting();
-
+        const { width, height, ...setting } = createSetting({
+            post: {
+                duotone: true,
+                duotoneColor1: "#987654",
+                duotoneColor2: "#456789",
+            }
+    });
         const stringifiedSetting = settingToString( setting );
 
         expect( stringToSetting( stringifiedSetting )).toEqual( setting );

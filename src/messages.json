@@ -28,6 +28,10 @@
             "randomize": "Randomize",
             "useAsBase": "Use as base",
             "mask": "Mask",
+            "postprocessing": "Post processing",
+            "duotone": "Duotone",
+            "color1": "Color 1",
+            "color2": "Color 2",
             "description": {
                 "angle": "Angle (in degrees) determining the sorting direction",
                 "quarterTurn": "Rotate in 90 degree increments",
