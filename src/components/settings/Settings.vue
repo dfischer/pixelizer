@@ -225,6 +225,7 @@
                     </div>
                     <div class="post-processing__content__sub">
                         <div class="input-wrapper">
+                            <div class="post-processing__color-preview" :style="{ backgroundColor: internalPostProcValue.duotoneColor1 }" />
                             <label
                                 for="duotoneColor1"
                                 v-t="'settings.color1'"
@@ -238,6 +239,7 @@
                             />
                         </div>
                         <div class="input-wrapper">
+                            <div class="post-processing__color-preview" :style="{ backgroundColor: internalPostProcValue.duotoneColor2 }" />
                             <label
                                 for="duotoneColor2"
                                 v-t="'settings.color2'"
@@ -539,9 +541,17 @@ input[type="text"] {
             display: block;
         }
 
-        &__sub {
-            padding-left: $spacing-medium;
-        }
+        // &__sub {
+        //     padding-left: $spacing-medium;
+        // }
+    }
+
+    &__color-preview {
+        margin: $spacing-xxsmall $spacing-small 0 0;
+        height: $spacing-medium;
+        width: ($spacing-medium + $spacing-xsmall);
+        border: 1px solid $color-toggle;
+        border-radius: $spacing-xsmall;
     }
 }
 
