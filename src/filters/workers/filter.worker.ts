@@ -94,11 +94,9 @@ self.addEventListener( "message", ( event: MessageEvent ): void => {
 
                 setProgress( 90 );
 
-                // apply post processing
+                // apply optional post processing
 
-                const doPostProcessing = data.post.duotone;
-
-                if ( doPostProcessing ) {
+                if ( data.post.duotone ) {
                     output = applyDuotone( output, data.post.duotoneColor1, data.post.duotoneColor2 );
                 }
 
