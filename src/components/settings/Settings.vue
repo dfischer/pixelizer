@@ -194,43 +194,63 @@
             <!-- post sort processing -->
             <div class="post-processing">
                 <h3 v-t="'settings.postprocessing'"></h3>
-                <div class="input-wrapper">
-                    <label
-                        for="duotone"
-                        v-t="'settings.duotone'"
-                    ></label>
-                    <input
-                        id="duotone"
-                        type="checkbox"
-                        v-model="internalPostProcValue.duotone"
-                        @change="saveState()"
-                    />
-                </div>
-                <div class="input-wrapper">
-                    <label
-                        for="duotoneColor1"
-                        v-t="'settings.color1'"
-                    ></label>
-                    <input
-                        id="duotoneColor1"
-                        type="text"
-                        maxlength="7"
-                        v-model="internalPostProcValue.duotoneColor1"
-                        @change="saveState()"
-                    />
-                </div>
-                <div class="input-wrapper">
-                    <label
-                        for="duotoneColor2"
-                        v-t="'settings.color2'"
-                    ></label>
-                    <input
-                        id="duotoneColor2"
-                        type="text"
-                        maxlength="7"
-                        v-model="internalPostProcValue.duotoneColor2"
-                        @change="saveState()"
-                    />
+                <button
+                    type="button"
+                    class="post-processing__toggle"
+                    :class="{
+                        'post-processing__toggle--active': showPostProcessing,
+                    }"
+                    :title="$t('settings.togglePostProcessingParams')"
+                    v-tooltip.left="$t('settings.togglePostProcessingParams')"
+                    @click="showPostProcessing = !showPostProcessing"
+                />
+                <div
+                    class="post-processing__content"
+                    :class="{
+                        'post-processing__content--active': showPostProcessing,
+                    }"
+                >
+                    <div class="input-wrapper">
+                        <label
+                            for="duotone"
+                            v-t="'settings.duotone'"
+                            v-tooltip.left="$t('settings.description.duotone')"
+                        ></label>
+                        <input
+                            id="duotone"
+                            type="checkbox"
+                            v-model="internalPostProcValue.duotone"
+                            @change="saveState()"
+                        />
+                    </div>
+                    <div class="post-processing__content__sub">
+                        <div class="input-wrapper">
+                            <label
+                                for="duotoneColor1"
+                                v-t="'settings.color1'"
+                            ></label>
+                            <input
+                                id="duotoneColor1"
+                                type="text"
+                                maxlength="7"
+                                v-model="internalPostProcValue.duotoneColor1"
+                                @change="saveState()"
+                            />
+                        </div>
+                        <div class="input-wrapper">
+                            <label
+                                for="duotoneColor2"
+                                v-t="'settings.color2'"
+                            ></label>
+                            <input
+                                id="duotoneColor2"
+                                type="text"
+                                maxlength="7"
+                                v-model="internalPostProcValue.duotoneColor2"
+                                @change="saveState()"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -286,6 +306,9 @@ export default {
     components: {
         SettingsHistory,
     },
+    data: () => ({
+        showPostProcessing: false,
+    }),
     computed: {
         ...mapState( useFileStore, [
             "hasImage",
@@ -481,6 +504,48 @@ $labelWidth: 135px;
     }
 }
 
+/* Style the button that is used to open and close the collapsible content */
+.post-processing {
+    position: relative;
+
+    &__toggle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: $spacing-small;
+        background: none;
+        color: $color-toggle;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        font-size: 15px;
+
+        &:before {
+            content: "\25BC";
+        }
+
+        &--active,
+        :hover {
+            color: $color-1;
+
+            &:before {
+                content: "\25B2";
+            }
+        }
+    }
+
+    &__content {
+        display: none;
+
+        &--active {
+            display: block;
+        }
+
+        &__sub {
+            padding-left: $spacing-medium;
+        }
+    }
+}
 
 .rotate-button {
     @include smallButton( 1.5em, 0 $spacing-small );
