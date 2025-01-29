@@ -33,11 +33,8 @@ export const applyDuotone = ( imageData: ImageData, color1: string, color2: stri
     const colorKey = `${color1}_${color2}`;
 
     if ( cacheKey !== colorKey ) {
-        console.info(" caching for " + colorKey);
         cacheGradient( color1, color2 );
-        cacheKey = colorKey;        
-    } else {
-        console.info("got " + cacheKey + " from cache");
+        cacheKey = colorKey;
     }
 
     imageData = toGrayscale( imageData );
