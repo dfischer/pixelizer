@@ -499,7 +499,6 @@ $labelWidth: 135px;
     }
 }
 
-/* Style the button that is used to open and close the collapsible content */
 .post-processing {
     position: relative;
 
