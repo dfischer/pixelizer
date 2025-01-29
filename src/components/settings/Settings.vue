@@ -329,14 +329,9 @@ export default {
             get(): PostProcessingParams {
                 return this.internalValue.post;
             },
-            set( value: PostProcessingParams ): void {
-                this.updateSettings({
-                    ...this.internalValue,
-                    post: {
-                        ...value,
-                    },
-                });
-            }
+            set( post: PostProcessingParams ): void {
+                this.updateSettings({ ...this.internalValue, post });
+            },
         },
         supportsCharLength(): boolean {
             return CHAR_LENGTH_SUPPORTING_INTERVALS.includes( this.settings.intervalFunction );
