@@ -44,8 +44,8 @@ export const useSettingsStore = defineStore( "settings", {
             intervalFunction: IntervalFunction.THRESHOLD,
             post: {
                 duotone: false,
-                duotoneColor1: "#FF0000",
-                duotoneColor2: "#00FFFF",
+                duotoneColor1: "#322C30",
+                duotoneColor2: "#C0C6C3",
             },
         },
     }),
