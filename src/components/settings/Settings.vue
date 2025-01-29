@@ -483,12 +483,16 @@ $labelWidth: 135px;
     flex: 1;
 }
 
-#inputAngle {
+#inputAngle,
+input[type="text"] {
     flex: 0;
-    width: $spacing-large + $spacing-medium;
     border-radius: $spacing-small;
     padding: $spacing-small $spacing-medium;
     border: none;
+}
+
+#inputAngle {
+    width: $spacing-large + $spacing-medium;
 }
 
 .settings-button {
