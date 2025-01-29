@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Igor Zinken 2024 - https://www.igorski.nl
+ * Igor Zinken 2024-2025 - https://www.igorski.nl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -191,6 +191,70 @@
                     ></button>
                 </div>
             </div>
+            <!-- post sort processing -->
+            <div class="post-processing">
+                <h3 v-t="'settings.postprocessing'"></h3>
+                <button
+                    type="button"
+                    class="post-processing__toggle"
+                    :class="{
+                        'post-processing__toggle--active': showPostProcessing,
+                    }"
+                    :title="$t('settings.togglePostProcessingParams')"
+                    v-tooltip.left="$t('settings.togglePostProcessingParams')"
+                    @click="showPostProcessing = !showPostProcessing"
+                />
+                <div
+                    class="post-processing__content"
+                    :class="{
+                        'post-processing__content--active': showPostProcessing,
+                    }"
+                >
+                    <div class="input-wrapper">
+                        <label
+                            for="duotone"
+                            v-t="'settings.duotone'"
+                            v-tooltip.left="$t('settings.description.duotone')"
+                        ></label>
+                        <input
+                            id="duotone"
+                            type="checkbox"
+                            v-model="internalPostProcValue.duotone"
+                            @change="saveState()"
+                        />
+                    </div>
+                    <div class="post-processing__content__sub">
+                        <div class="input-wrapper">
+                            <div class="post-processing__color-preview" :style="{ backgroundColor: internalPostProcValue.duotoneColor1 }" />
+                            <label
+                                for="duotoneColor1"
+                                v-t="'settings.color1'"
+                            ></label>
+                            <input
+                                id="duotoneColor1"
+                                type="text"
+                                maxlength="7"
+                                v-model="internalPostProcValue.duotoneColor1"
+                                @change="saveState()"
+                            />
+                        </div>
+                        <div class="input-wrapper">
+                            <div class="post-processing__color-preview" :style="{ backgroundColor: internalPostProcValue.duotoneColor2 }" />
+                            <label
+                                for="duotoneColor2"
+                                v-t="'settings.color2'"
+                            ></label>
+                            <input
+                                id="duotoneColor2"
+                                type="text"
+                                maxlength="7"
+                                v-model="internalPostProcValue.duotoneColor2"
+                                @change="saveState()"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </section>
     <section class="footer">
@@ -212,7 +276,7 @@
 
 <script lang="ts">
 import { mapState, mapActions } from "pinia";
-import type { SortSettings } from "@/definitions/types";
+import type { PostProcessingParams, SortSettings } from "@/definitions/types";
 import { SortingType } from "@/filters/sorter/sorting";
 import { IntervalFunction } from "@/filters/sorter/interval";
 import { useFileStore } from "@/store/file";
@@ -244,6 +308,9 @@ export default {
     components: {
         SettingsHistory,
     },
+    data: () => ({
+        showPostProcessing: false,
+    }),
     computed: {
         ...mapState( useFileStore, [
             "hasImage",
@@ -258,6 +325,14 @@ export default {
             },
             set( value: SortSettings ): void {
                 this.updateSettings( value );
+            },
+        },
+        internalPostProcValue: {
+            get(): PostProcessingParams {
+                return this.internalValue.post;
+            },
+            set( post: PostProcessingParams ): void {
+                this.updateSettings({ ...this.internalValue, post });
             },
         },
         supportsCharLength(): boolean {
@@ -410,12 +485,16 @@ $labelWidth: 135px;
     flex: 1;
 }
 
-#inputAngle {
+#inputAngle,
+input[type="text"] {
     flex: 0;
-    width: $spacing-large + $spacing-medium;
     border-radius: $spacing-small;
     padding: $spacing-small $spacing-medium;
     border: none;
+}
+
+#inputAngle {
+    width: $spacing-large + $spacing-medium;
 }
 
 .settings-button {
@@ -426,6 +505,55 @@ $labelWidth: 135px;
     }
 }
 
+.post-processing {
+    position: relative;
+
+    &__toggle {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: $spacing-small;
+        background: none;
+        color: $color-toggle;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        font-size: 15px;
+
+        &:before {
+            content: "\25BC";
+        }
+
+        &--active,
+        :hover {
+            color: $color-1;
+
+            &:before {
+                content: "\25B2";
+            }
+        }
+    }
+
+    &__content {
+        display: none;
+
+        &--active {
+            display: block;
+        }
+
+        // &__sub {
+        //     padding-left: $spacing-medium;
+        // }
+    }
+
+    &__color-preview {
+        margin: $spacing-xxsmall $spacing-small 0 0;
+        height: $spacing-medium;
+        width: ($spacing-medium + $spacing-xsmall);
+        border: 1px solid $color-toggle;
+        border-radius: $spacing-xsmall;
+    }
+}
 
 .rotate-button {
     @include smallButton( 1.5em, 0 $spacing-small );

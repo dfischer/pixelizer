@@ -21,10 +21,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 import type { Size } from "zcanvas";
-import type { PixelList } from "@/definitions/types";
+import type { PixelList, PostProcessingParams } from "@/definitions/types";
 import { getIntervals, IntervalFunction } from "@/filters/sorter/interval";
 import { sortImage } from "@/filters/sorter/sorter";
 import { getSortingFunctionByType, SortingType } from "@/filters/sorter/sorting";
+import { applyDuotone } from "@/filters/duotone";
 import { getPixel, setPixel, hasPixel } from "@/utils/canvas";
 
 type PixelBuffer = {
@@ -43,6 +44,7 @@ export interface FilterRequest {
     sortingType?: SortingType,
     intervalFunction: IntervalFunction;
     size: Size;
+    post?: PostProcessingParams;
 }
 
 let imageData: ImageData;
@@ -83,12 +85,20 @@ self.addEventListener( "message", ( event: MessageEvent ): void => {
 
                 setProgress( 80 );
     
-                const output = placePixels(
+                let output = placePixels(
                     sortedPixels,
                     imageData,
                     size,
                     maskData,
                 );
+
+                setProgress( 90 );
+
+                // apply optional post processing
+
+                if ( data.post.duotone ) {
+                    output = applyDuotone( output, data.post.duotoneColor1, data.post.duotoneColor2 );
+                }
 
                 setProgress( 100 );
                 

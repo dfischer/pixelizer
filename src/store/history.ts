@@ -42,7 +42,7 @@ export const useHistoryStore = defineStore( "history", {
     actions: {
         storeHistoryState( settings: SortSettings ): void {
             this.steps.splice( this.step + 1 );
-            this.steps.push({ ...settings });
+            this.steps.push( JSON.parse( JSON.stringify({ ...settings })));
 
             if ( this.steps.length > MAX_STATES ) {
                 this.steps.shift();
